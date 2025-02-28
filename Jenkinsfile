@@ -2,11 +2,7 @@ pipeline {
     agent any
 
 
-    stage('Checkout') {
-            steps {
-                git url: 'https://github.com/ramijellali/churn_deployment_ci-cd', branch: 'jenkins'
-            }
-        }
+
     stages {
         stage('Data Processing') {
             steps {
