@@ -1,0 +1,52 @@
+name: CI/CD Pipeline for Churn Prediction
+
+on:
+  push:
+    branches:
+      - jenkins  # Trigger the pipeline on push to the 'jenkins' branch
+  pull_request:
+    branches:
+      - jenkins  # Trigger on pull requests targeting the 'jenkins' branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # The environment to run the workflow on
+
+    steps:
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Set up Python
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    # Install dependencies (you can adjust the dependency management tool based on your project)
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Ensure your requirements.txt is in the root directory
+
+    # Run data processing (adjust based on your actual file names)
+    - name: Run data processing
+      run: |
+        python data_processing.py
+
+    # Train the model (adjust the script accordingly)
+    - name: Train model
+      run: |
+        python train_model.py
+
+    # Evaluate the model (adjust the script accordingly)
+    - name: Evaluate model
+      run: |
+        python evaluate_model.py
+
+    # Deploy model (adjust deployment steps as needed)
+    - name: Deploy model
+      run: |
+        python deploy_model.py
+
+    # Optional: Send success/failure notifications (you can use Slack, Email, etc.)
