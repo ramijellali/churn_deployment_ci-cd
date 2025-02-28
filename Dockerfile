@@ -1,16 +1,25 @@
-# Use a smaller base image
-FROM python:3.9-slim
+# Use the official Jenkins base image
+FROM jenkins/jenkins:2.492.1-jdk17
 
-WORKDIR /app
+# Switch to root user to install dependencies
+USER root
 
-# Copy only requirements first to leverage Docker caching
-COPY requirements.txt .
+# Install apt utilities
+RUN apt-get update && apt-get install -y lsb-release
 
-# Install dependencies without cache to reduce size
-RUN pip install --no-cache-dir -r requirements.txt
+# Add Docker's official GPG key and repository
+RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+  https://download.docker.com/linux/debian/gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+  https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
 
-# Copy the rest of the project
-COPY . .
+# Install Docker CLI
+RUN apt-get update && apt-get install -y docker-ce-cli
 
-# Run the API
-CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
+# Switch back to the Jenkins user
+USER jenkins
+
+# Install required plugins for Jenkins (Blue Ocean and Docker Workflow)
+RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
