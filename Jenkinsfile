@@ -9,7 +9,7 @@ pipeline {
                 script {
                     echo "Starting Data Processing"
                     // Example: Run the data preprocessing script
-                    sh 'python data_processing.py'
+                    sh 'python3 data_processing.py'
                 }
             }
         }
@@ -19,7 +19,7 @@ pipeline {
                 script {
                     echo "Starting Model Training"
                     // Example: Run the model training script
-                    sh 'python train_model.py'
+                    sh 'python3 train_model.py'
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
                 script {
                     echo "Starting Model Evaluation"
                     // Example: Run the model evaluation script
-                    sh 'python evaluate_model.py'
+                    sh 'python3 evaluate_model.py'
                 }
             }
         }
@@ -45,7 +45,7 @@ pipeline {
                 script {
                     echo "Deploying Model"
                     // Example: Deploy the model or save it
-                    sh 'python deploy_model.py'
+                    sh 'python3 deploy_model.py'
                 }
             }
         }
