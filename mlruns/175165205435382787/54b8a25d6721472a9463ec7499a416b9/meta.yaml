@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/msi/Desktop/zz-master/mlruns/175165205435382787/54b8a25d6721472a9463ec7499a416b9/artifacts
+end_time: 1740707355713
+entry_point_name: ''
+experiment_id: '175165205435382787'
+lifecycle_stage: active
+run_id: 54b8a25d6721472a9463ec7499a416b9
+run_name: RandomForest
+run_uuid: 54b8a25d6721472a9463ec7499a416b9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740707344061
+status: 3
+tags: []
+user_id: msi

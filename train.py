@@ -29,21 +29,39 @@ models = {
     "LogisticRegression": LogisticRegression(max_iter=1000, random_state=42)
 }
 
+# Set the experiment for MLflow
 mlflow.set_experiment("mlops_project")
 
+# Iterate through the models and train them
 for name, model in models.items():
     with mlflow.start_run(run_name=name):
+
+        # Train the model
         model.fit(X_train, y_train)
+
+        # Make predictions
         y_pred = model.predict(X_test)
+
+        # Compute accuracy
         accuracy = accuracy_score(y_test, y_pred)
 
+        # Print model performance
         print(f"{name} Accuracy: {accuracy}")
         print(classification_report(y_test, y_pred))
 
-        # Log des métriques avec MLflow
+        # Log metrics (accuracy) with MLflow
         mlflow.log_metric("accuracy", accuracy)
+
+        # Log the trained model with MLflow
         mlflow.sklearn.log_model(model, f"{name}_model")
 
-        # Sauvegarde du modèle
+        # Optionally, log the parameters (e.g., n_estimators for RandomForest)
+        if hasattr(model, 'n_estimators'):
+            mlflow.log_param("n_estimators", model.n_estimators)
+
+        # Save the model locally using joblib
         joblib.dump(model, f"{name}.pkl")
-        print(f"Modèle {name} sauvegardé localement !")
+        print(f"Model {name} saved locally!")
+
+# Note: Ensure you have the proper environment to view the MLflow UI, e.g.,
+# running `mlflow ui --host 0.0.0.0 --port 5000` to visualize the logs.

@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/msi/Desktop/zz-master/mlruns/175165205435382787/8f7eeb6d8a0f43ee92da4510f260297f/artifacts
+end_time: 1740707377700
+entry_point_name: ''
+experiment_id: '175165205435382787'
+lifecycle_stage: active
+run_id: 8f7eeb6d8a0f43ee92da4510f260297f
+run_name: KNN
+run_uuid: 8f7eeb6d8a0f43ee92da4510f260297f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740707374192
+status: 3
+tags: []
+user_id: msi

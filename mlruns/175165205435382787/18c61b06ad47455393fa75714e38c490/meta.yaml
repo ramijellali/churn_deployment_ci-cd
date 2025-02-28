@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/msi/Desktop/zz-master/mlruns/175165205435382787/18c61b06ad47455393fa75714e38c490/artifacts
+end_time: 1740707374182
+entry_point_name: ''
+experiment_id: '175165205435382787'
+lifecycle_stage: active
+run_id: 18c61b06ad47455393fa75714e38c490
+run_name: DecisionTree
+run_uuid: 18c61b06ad47455393fa75714e38c490
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740707370373
+status: 3
+tags: []
+user_id: msi
