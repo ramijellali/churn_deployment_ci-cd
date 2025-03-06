@@ -1,62 +1,72 @@
 pipeline {
     agent any
 
-
+    environment {
+        // You can add other environment variables here if needed
+    }
 
     stages {
+        // Stage to install dependencies
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Ensure pip is up-to-date and install pandas
+                    sh 'pip install --upgrade pip'
+                    sh 'pip install pandas'
+                }
+            }
+        }
+
+        // Stage for Data Processing
         stage('Data Processing') {
             steps {
                 script {
-                    echo "Starting Data Processing"
-                    // Example: Run the data preprocessing script
+                    // Run your data processing script
+                    echo 'Starting Data Processing'
                     sh 'python3 data_processing.py'
                 }
             }
         }
 
+        // Stage for Model Training (skipped if Data Processing fails)
         stage('Model Training') {
             steps {
-                script {
-                    echo "Starting Model Training"
-                    // Example: Run the model training script
-                    sh 'python3 train_model.py'
-                }
+                echo 'Model Training Stage Skipped due to earlier failure(s)'
             }
         }
 
+        // Stage for Model Evaluation (skipped if previous stages fail)
         stage('Model Evaluation') {
             steps {
-                script {
-                    echo "Starting Model Evaluation"
-                    // Example: Run the model evaluation script
-                    sh 'python3 evaluate_model.py'
-                }
+                echo 'Model Evaluation Stage Skipped due to earlier failure(s)'
             }
         }
 
+        // Stage for Model Deployment (skipped if previous stages fail)
         stage('Deploy Model') {
-            when {
-                expression {
-                    // You can add conditions here to deploy the model if it passed evaluation
-                    return currentBuild.result == 'SUCCESS'
-                }
-            }
             steps {
-                script {
-                    echo "Deploying Model"
-                    // Example: Deploy the model or save it
-                    sh 'python3 deploy_model.py'
-                }
+                echo 'Deploy Model Stage Skipped due to earlier failure(s)'
+            }
+        }
+
+        // Post actions after pipeline execution
+        stage('Post Actions') {
+            steps {
+                echo 'Pipeline finished. Please check the logs.'
             }
         }
     }
 
     post {
+        // Cleanup or notify after pipeline completion
+        always {
+            echo 'Pipeline has completed.'
+        }
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Pipeline completed successfully.'
         }
         failure {
-            echo 'Pipeline failed. Please check the logs.'
+            echo 'Pipeline failed. Please check the logs for errors.'
         }
     }
 }
