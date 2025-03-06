@@ -9,6 +9,5 @@ plotly
 fastapi
 uvicorn
 mlflow
-xgboost
 imbalanced-learn
 python-multipart
