@@ -38,7 +38,7 @@ pipeline {
             }
             steps {
                 echo 'Running Model Training...'
-                // Add actual training script if needed, e.g., sh './$VENV_DIR/bin/python train_model.py'
+                 sh './$VENV_DIR/bin/python train_model.py'
             }
         }
         stage('Model Evaluation') {
@@ -49,7 +49,7 @@ pipeline {
             }
             steps {
                 echo 'Running Model Evaluation...'
-                // Add actual evaluation script if needed, e.g., sh './$VENV_DIR/bin/python evaluate_model.py'
+                 sh './$VENV_DIR/bin/python evaluate_model.py'
             }
         }
         stage('Deploy Model') {
@@ -60,7 +60,7 @@ pipeline {
             }
             steps {
                 echo 'Deploying Model...'
-                // Add actual deployment script if needed, e.g., sh './$VENV_DIR/bin/python deploy_model.py'
+                sh './$VENV_DIR/bin/python deploy_model.py'
             }
         }
         stage('Post Actions') {
