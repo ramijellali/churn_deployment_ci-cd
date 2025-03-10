@@ -18,7 +18,7 @@ pipeline {
                 script {
                     sh 'python3 -m venv $VENV_DIR'
                     sh './$VENV_DIR/bin/pip install --upgrade pip'
-                    sh './$VENV_DIR/bin/pip install pandas'
+                    sh './$VENV_DIR/bin/pip install -r requirements.txt'
                 }
             }
         }
@@ -38,6 +38,7 @@ pipeline {
             }
             steps {
                 echo 'Running Model Training...'
+                // Add actual training script if needed, e.g., sh './$VENV_DIR/bin/python train_model.py'
             }
         }
         stage('Model Evaluation') {
@@ -48,6 +49,7 @@ pipeline {
             }
             steps {
                 echo 'Running Model Evaluation...'
+                // Add actual evaluation script if needed, e.g., sh './$VENV_DIR/bin/python evaluate_model.py'
             }
         }
         stage('Deploy Model') {
@@ -58,6 +60,7 @@ pipeline {
             }
             steps {
                 echo 'Deploying Model...'
+                // Add actual deployment script if needed, e.g., sh './$VENV_DIR/bin/python deploy_model.py'
             }
         }
         stage('Post Actions') {
