@@ -38,7 +38,7 @@ pipeline {
             }
             steps {
                 echo 'Running Model Training...'
-                 sh './$VENV_DIR/bin/python train_model.py'
+                 sh './$VENV_DIR/bin/python train.py'
             }
         }
         stage('Model Evaluation') {
@@ -49,7 +49,7 @@ pipeline {
             }
             steps {
                 echo 'Running Model Evaluation...'
-                 sh './$VENV_DIR/bin/python evaluate_model.py'
+                 sh './$VENV_DIR/bin/python predict.py'
             }
         }
         stage('Deploy Model') {
@@ -60,7 +60,7 @@ pipeline {
             }
             steps {
                 echo 'Deploying Model...'
-                sh './$VENV_DIR/bin/python deploy_model.py'
+                sh './$VENV_DIR/bin/python deploy.py'
             }
         }
         stage('Post Actions') {
