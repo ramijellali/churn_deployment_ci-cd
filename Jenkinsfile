@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    // Use your custom Docker image from Docker Hub
+    agent {
+        docker {
+            image 'rjlali/api' // Your public Docker image
+            args '-u root' // Run as root to avoid permission issues; adjust if needed
+        }
+    }
 
     environment {
         VENV_DIR = 'venv' // Path to the virtual environment directory
@@ -23,16 +29,11 @@ pipeline {
             steps {
                 script {
                     // Create a virtual environment with python3
-                    sh 'python3 -m venv ${VENV_DIR}'
+                    sh 'python3 -m venv ${VENV_DIR}' // Assumes python3; change to 'python' if needed
 
-                    // Use appropriate path for pip based on OS
-                    if (isUnix()) {
-                        sh './${VENV_DIR}/bin/pip install --upgrade pip'
-                        sh './${VENV_DIR}/bin/pip install pandas'
-                    } else {
-                        sh './${VENV_DIR}/Scripts/pip install --upgrade pip'
-                        sh './${VENV_DIR}/Scripts/pip install pandas'
-                    }
+                    // Use bin/ for Unix-like systems (assuming your image is Linux-based)
+                    sh './${VENV_DIR}/bin/pip install --upgrade pip'
+                    sh './${VENV_DIR}/bin/pip install pandas'
                 }
             }
         }
@@ -42,16 +43,12 @@ pipeline {
             steps {
                 script {
                     echo 'Starting Data Processing'
-                    if (isUnix()) {
-                        sh './${VENV_DIR}/bin/python data_processing.py'
-                    } else {
-                        sh './${VENV_DIR}/Scripts/python data_processing.py'
-                    }
+                    sh './${VENV_DIR}/bin/python data_processing.py'
                 }
             }
         }
 
-        // Stage for Model Training (skipped if Data Processing fails)
+        // Stage for Model Training
         stage('Model Training') {
             when {
                 expression {
@@ -64,7 +61,7 @@ pipeline {
             }
         }
 
-        // Stage for Model Evaluation (skipped if previous stages fail)
+        // Stage for Model Evaluation
         stage('Model Evaluation') {
             when {
                 expression {
@@ -77,7 +74,7 @@ pipeline {
             }
         }
 
-        // Stage for Model Deployment (skipped if previous stages fail)
+        // Stage for Model Deployment
         stage('Deploy Model') {
             when {
                 expression {
@@ -99,7 +96,6 @@ pipeline {
     }
 
     post {
-        // Cleanup or notify after pipeline completion
         always {
             echo 'Pipeline has completed.'
         }
