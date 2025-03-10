@@ -97,7 +97,7 @@ pipeline {
             echo 'Pipeline completed successfully.'
         }
         failure {
-            echo 'Pipeline failed. Please check the logs for errors.'
+            echo 'Ppipeline failed. Please check the logs for errors.'
         }
     }
 }
