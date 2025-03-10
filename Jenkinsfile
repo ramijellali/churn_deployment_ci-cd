@@ -6,16 +6,33 @@ pipeline {
     }
 
     stages {
+        // Stage to verify Python installation
+        stage('Test Verify Python Installation') {
+            steps {
+                script {
+                    echo 'Checking Python installation...'
+                    // Check for python or python3 and their versions
+                    sh 'which python || which python3 || echo "Python not found"'
+                    sh 'python --version || python3 --version || echo "No Python version available"'
+                }
+            }
+        }
+
         // Stage to set up the virtual environment and install dependencies
         stage('Setup Virtual Environment and Install Dependencies') {
             steps {
                 script {
-                    // Create a virtual environment
-                    sh 'python -m venv ${VENV_DIR}'
+                    // Create a virtual environment with python3
+                    sh 'python3 -m venv ${VENV_DIR}'
 
-                    // Install dependencies inside the virtual environment
-                    sh './${VENV_DIR}/Scripts/pip install --upgrade pip' // Upgrade pip in the virtual environment
-                    sh './${VENV_DIR}/Scripts/pip install pandas' // Install pandas (add more packages if needed)
+                    // Use appropriate path for pip based on OS
+                    if (isUnix()) {
+                        sh './${VENV_DIR}/bin/pip install --upgrade pip'
+                        sh './${VENV_DIR}/bin/pip install pandas'
+                    } else {
+                        sh './${VENV_DIR}/Scripts/pip install --upgrade pip'
+                        sh './${VENV_DIR}/Scripts/pip install pandas'
+                    }
                 }
             }
         }
@@ -24,31 +41,52 @@ pipeline {
         stage('Data Processing') {
             steps {
                 script {
-                    // Run your data processing script
                     echo 'Starting Data Processing'
-                    sh './${VENV_DIR}/Scripts/python data_processing.py'
+                    if (isUnix()) {
+                        sh './${VENV_DIR}/bin/python data_processing.py'
+                    } else {
+                        sh './${VENV_DIR}/Scripts/python data_processing.py'
+                    }
                 }
             }
         }
 
         // Stage for Model Training (skipped if Data Processing fails)
         stage('Model Training') {
+            when {
+                expression {
+                    currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                }
+            }
             steps {
-                echo 'Model Training Stage Skipped due to earlier failure(s)'
+                echo 'Running Model Training...'
+                // Add your model training steps here
             }
         }
 
         // Stage for Model Evaluation (skipped if previous stages fail)
         stage('Model Evaluation') {
+            when {
+                expression {
+                    currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                }
+            }
             steps {
-                echo 'Model Evaluation Stage Skipped due to earlier failure(s)'
+                echo 'Running Model Evaluation...'
+                // Add your model evaluation steps here
             }
         }
 
         // Stage for Model Deployment (skipped if previous stages fail)
         stage('Deploy Model') {
+            when {
+                expression {
+                    currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                }
+            }
             steps {
-                echo 'Deploy Model Stage Skipped due to earlier failure(s)'
+                echo 'Deploying Model...'
+                // Add your deployment steps here
             }
         }
 
